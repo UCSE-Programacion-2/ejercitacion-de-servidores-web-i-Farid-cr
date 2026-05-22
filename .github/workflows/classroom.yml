@@ -1,0 +1,83 @@
+name: GitHub Classroom Workflow
+
+on:
+  - push
+  - workflow_dispatch
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  build:
+    name: Autograding
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+
+      - name: Root Route
+        id: test-root
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: 'GET /'
+          setup-command: ''
+          command: 'npm test -- -t "GET / debería devolver"'
+          timeout: 10
+          max-score: 20
+
+      - name: Nosotros Route
+        id: test-nosotros
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: 'GET /nosotros'
+          setup-command: ''
+          command: 'npm test -- -t "GET /nosotros debería devolver"'
+          timeout: 10
+          max-score: 20
+
+      - name: Cursos Route
+        id: test-cursos
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: 'GET /cursos'
+          setup-command: ''
+          command: 'npm test -- -t "GET /cursos debería devolver"'
+          timeout: 10
+          max-score: 20
+
+      - name: Contacto Route
+        id: test-contacto
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: 'GET /contacto'
+          setup-command: ''
+          command: 'npm test -- -t "GET /contacto debería devolver"'
+          timeout: 10
+          max-score: 20
+
+      - name: Not Found Route
+        id: test-404
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: 'GET /ruta-no-existente'
+          setup-command: ''
+          command: 'npm test -- -t "GET /ruta-no-existente debería devolver"'
+          timeout: 10
+          max-score: 20
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          TEST-ROOT_RESULTS: '${{steps.test-root.outputs.result}}'
+          TEST-NOSOTROS_RESULTS: '${{steps.test-nosotros.outputs.result}}'
+          TEST-CURSOS_RESULTS: '${{steps.test-cursos.outputs.result}}'
+          TEST-CONTACTO_RESULTS: '${{steps.test-contacto.outputs.result}}'
+          TEST-404_RESULTS: '${{steps.test-404.outputs.result}}'
+        with:
+          runners: test-root,test-nosotros,test-cursos,test-contacto,test-404

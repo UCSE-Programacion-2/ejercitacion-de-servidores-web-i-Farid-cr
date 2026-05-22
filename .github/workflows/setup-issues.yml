@@ -1,0 +1,70 @@
+name: Setup Issues
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+  repository_dispatch:
+    types: [setup-issues]
+
+concurrency:
+  group: setup-issues-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Crear issue 1 (Root)
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          update_existing: true
+          search_existing: all
+          filename: .github/ISSUE_TEMPLATE/1-root.md
+
+      - name: Crear issue 2 (Nosotros)
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          update_existing: true
+          search_existing: all
+          filename: .github/ISSUE_TEMPLATE/2-nosotros.md
+
+      - name: Crear issue 3 (Cursos)
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          update_existing: true
+          search_existing: all
+          filename: .github/ISSUE_TEMPLATE/3-cursos.md
+
+      - name: Crear issue 4 (Contacto)
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          update_existing: true
+          search_existing: all
+          filename: .github/ISSUE_TEMPLATE/4-contacto.md
+
+      - name: Crear issue 5 (404)
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          update_existing: true
+          search_existing: all
+          filename: .github/ISSUE_TEMPLATE/5-404.md

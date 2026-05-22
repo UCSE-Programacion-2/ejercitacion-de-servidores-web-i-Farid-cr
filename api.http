@@ -1,0 +1,14 @@
+### Ruta raíz
+GET http://localhost:3000/
+
+### Nosotros
+GET http://localhost:3000/nosotros
+
+### Cursos
+GET http://localhost:3000/cursos
+
+### Contacto
+GET http://localhost:3000/contacto
+
+### Ruta no existente
+GET http://localhost:3000/ruta-no-existente
