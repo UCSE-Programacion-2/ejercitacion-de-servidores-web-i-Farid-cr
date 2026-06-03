@@ -27,8 +27,6 @@ function createServer() {
       res.statusCode = 404;
       res.end('No se ha encontrado la ruta ingresada.');
     }
-
-
   });
 
   return server;
